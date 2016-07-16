@@ -4,6 +4,7 @@ define sdkman::ant(
   $dependencies,
 ) {
 
+  require stdlib
   require sdkman::install
 
   exec { "install-ant-$name":
@@ -19,10 +20,11 @@ define sdkman::ant(
   }
 
   if ($dependencies) {
+    $dep_targets = join($dependencies, " ")
     exec { "fetch ant dependencies":
       cwd     => "/Users/${boxen_user}/.sdkman/candidates/ant/${version}",
       path    => ["/Users/${boxen_user}/.sdkman/candidates/ant/${version}/bin", "/usr/local/bin", "/usr/bin", "/bin", "/usr/sbin"],
-      command => "ant -f fetch.xml ${dependencies} -Ddest=system",
+      command => "ant -f fetch.xml ${dep_targets} -Ddest=system",
       require => Exec["install-ant-$name"],
     }
   }
