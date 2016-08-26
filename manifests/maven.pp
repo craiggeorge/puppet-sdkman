@@ -10,10 +10,11 @@ define sdkman::maven(
     creates => "/Users/${::boxen_user}/.sdkman/candidates/maven/${version}"
   }
 
-  if($default) {
+  if ($default) {
     exec { "set-maven-default":
       command => "bash --login -c 'sdk default maven ${version}'",
       require => Exec["install-maven-$name"],
     }
   }
+
 }
